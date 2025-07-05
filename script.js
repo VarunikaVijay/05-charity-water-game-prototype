@@ -463,6 +463,9 @@ function renderGameGrid() {
     if (left <= 0) {
       // Player completed the objective
 
+      // Show confetti when player wins
+      showConfetti();
+
       // Calculate bonus points for unused moves
       const bonusPoints = movesLeft * 2; // 2 points for each unused move
       currentScore += bonusPoints; // Add bonus to current score
@@ -752,6 +755,61 @@ function renderGameGrid() {
   setTimeout(() => {
     handleMatches();
   }, 100);
+}
+
+// Simple confetti function using DOM elements (no libraries)
+function showConfetti() {
+  // Remove old confetti if present
+  const oldConfetti = document.getElementById('confetti-container');
+  if (oldConfetti) oldConfetti.remove();
+
+  // Create a container for confetti
+  const confettiContainer = document.createElement('div');
+  confettiContainer.id = 'confetti-container';
+  confettiContainer.style.position = 'fixed';
+  confettiContainer.style.left = '0';
+  confettiContainer.style.top = '0';
+  confettiContainer.style.width = '100vw';
+  confettiContainer.style.height = '100vh';
+  confettiContainer.style.pointerEvents = 'none';
+  confettiContainer.style.zIndex = '300';
+  document.body.appendChild(confettiContainer);
+
+  // Confetti colors
+  const colors = ['#FFC907', '#2E9DF7', '#8BD1CB', '#4FCB53', '#FF902A', '#F5402C', '#159A48', '#F16061'];
+
+  // Create 60 confetti pieces
+  for (let i = 0; i < 60; i++) {
+    const conf = document.createElement('div');
+    conf.style.position = 'absolute';
+    conf.style.width = '12px';
+    conf.style.height = '18px';
+    conf.style.background = colors[Math.floor(Math.random() * colors.length)];
+    conf.style.left = `${Math.random() * 100}vw`;
+    conf.style.top = `-${Math.random() * 20 + 10}px`;
+    conf.style.opacity = '0.85';
+    conf.style.borderRadius = '3px';
+    conf.style.transform = `rotate(${Math.random() * 360}deg)`;
+    confettiContainer.appendChild(conf);
+
+    // Animate each confetti piece
+    const duration = 1800 + Math.random() * 1200;
+    const translateX = (Math.random() - 0.5) * 200;
+    const rotate = Math.random() * 720;
+
+    conf.animate([
+      { transform: conf.style.transform, top: conf.style.top, opacity: 0.85 },
+      { transform: `translateX(${translateX}px) rotate(${rotate}deg)`, top: '100vh', opacity: 0.85 }
+    ], {
+      duration: duration,
+      easing: 'ease-in'
+    });
+  }
+
+  // Remove confetti after 2.5 seconds
+  setTimeout(() => {
+    confettiContainer.remove();
+  }, 2500);
 }
 
 // Add a description and photo for each country
