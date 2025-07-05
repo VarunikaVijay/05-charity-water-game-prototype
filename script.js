@@ -434,6 +434,11 @@ function renderGameGrid() {
       popup.style.display = 'none';
       gameplaySection.style.display = 'none';
       puzzleSection.style.display = 'block';
+      // Show the country scroll bar and select country instruction again
+      countryScroll.style.display = '';
+      if (selectCountryInstruction) {
+        selectCountryInstruction.style.display = '';
+      }
       // If a callback is set (for win), call it
       if (typeof window._popupOnComplete === 'function') {
         window._popupOnComplete();
